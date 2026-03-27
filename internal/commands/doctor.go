@@ -67,7 +67,7 @@ func newDoctorCmd(d *Deps) *cobra.Command {
 
 			if issues > 0 {
 				fmt.Printf("\n%d issue(s) found.\n", issues)
-				os.Exit(1)
+				return fmt.Errorf("%d issue(s) found", issues)
 			}
 			fmt.Println("\nAll checks passed.")
 			return nil
