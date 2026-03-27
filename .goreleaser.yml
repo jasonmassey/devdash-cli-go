@@ -26,7 +26,6 @@ archives:
     name_template: "devdash_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     files:
       - LICENSE
-      - README.md
 
 checksum:
   name_template: "checksums.txt"
