@@ -1,0 +1,11 @@
+# Binary (root only, not cmd/devdash/)
+/devdash
+dist/
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
