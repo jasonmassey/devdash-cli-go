@@ -214,6 +214,20 @@ func TestCreateCommandMissingTitle(t *testing.T) {
 	}
 }
 
+func TestCreateCommandDashTitle(t *testing.T) {
+	run := newTestEnv(t, apiPkg.SampleBeads())
+	_, err := run("create", "--title=-urgent")
+	if err == nil {
+		t.Fatal("create with dash-prefixed title should fail")
+	}
+	if !strings.Contains(err.Error(), "cannot start with '-'") {
+		t.Errorf("should mention cannot start with '-', got: %v", err)
+	}
+	if !strings.Contains(err.Error(), "--title=") {
+		t.Errorf("should suggest --title= syntax, got: %v", err)
+	}
+}
+
 func TestUpdateCommand(t *testing.T) {
 	beads := apiPkg.SampleBeads()
 	run := newTestEnv(t, beads)

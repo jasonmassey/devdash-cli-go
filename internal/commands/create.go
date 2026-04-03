@@ -3,6 +3,7 @@ package commands
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/jasonmassey/devdash-cli-go/internal/api"
 	"github.com/jasonmassey/devdash-cli-go/internal/resolve"
@@ -14,14 +15,17 @@ func newCreateCmd(d *Deps) *cobra.Command {
 		Use:   "create",
 		Short: "Create a new issue",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			pid, err := d.requireProject(cmd)
-			if err != nil {
-				return err
-			}
-
 			title, _ := cmd.Flags().GetString("title")
 			if title == "" {
 				return fmt.Errorf("--title is required")
+			}
+			if strings.HasPrefix(title, "-") {
+				return fmt.Errorf("title cannot start with '-': %s\nUse --title=\"...\" for titles that might look like flags", title)
+			}
+
+			pid, err := d.requireProject(cmd)
+			if err != nil {
+				return err
 			}
 
 			description, _ := cmd.Flags().GetString("description")
