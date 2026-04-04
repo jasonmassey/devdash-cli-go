@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const Version = "0.3.0"
+const Version = "0.3.1"
 
 // Deps holds shared dependencies injected into all commands.
 type Deps struct {
