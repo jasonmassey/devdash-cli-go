@@ -32,9 +32,9 @@ func newDeleteCmd(d *Deps) *cobra.Command {
 					return fmt.Errorf("failed to resolve %q: %w", arg, err)
 				}
 
-				path := "/beads/" + uuid
+				path := "/beads/" + uuid + "?projectId=" + pid
 				if cascade {
-					path += "?cascade=true"
+					path += "&cascade=true"
 				}
 
 				_, err = d.Client.Delete(path)

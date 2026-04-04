@@ -194,5 +194,5 @@ type AddDependencyRequest struct {
 // CommentRequest is the body for POST /beads/{id}/comments.
 type CommentRequest struct {
 	ProjectID string `json:"projectId"`
-	Body      string `json:"body"`
+	Content   string `json:"content"`
 }

@@ -19,17 +19,19 @@ func newActivityCmd(d *Deps) *cobra.Command {
 				return err
 			}
 
-			path := "/activity?projectId=" + pid
+			path := "/projects/" + pid + "/activity"
+			sep := "?"
 			if len(args) > 0 {
 				uuid, err := resolve.IDWithFetch(args[0], d.Client, pid)
 				if err != nil {
 					return err
 				}
-				path = "/activity?beadId=" + uuid
+				path += sep + "targetId=" + uuid
+				sep = "&"
 			}
 
 			if limit, _ := cmd.Flags().GetInt("limit"); limit > 0 {
-				path += fmt.Sprintf("&limit=%d", limit)
+				path += fmt.Sprintf("%slimit=%d", sep, limit)
 			}
 
 			data, err := d.Client.Get(path)
