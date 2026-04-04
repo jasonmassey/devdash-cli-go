@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -122,10 +123,12 @@ func TestSaveToken(t *testing.T) {
 		t.Errorf("token = %q, want %q", string(data), "test-token-123")
 	}
 
-	// Check permissions
-	info, _ := os.Stat(filepath.Join(dir, TokenFileName))
-	if info.Mode().Perm() != 0600 {
-		t.Errorf("token permissions = %o, want 0600", info.Mode().Perm())
+	// Check permissions (skip on Windows — no Unix permission model)
+	if runtime.GOOS != "windows" {
+		info, _ := os.Stat(filepath.Join(dir, TokenFileName))
+		if info.Mode().Perm() != 0600 {
+			t.Errorf("token permissions = %o, want 0600", info.Mode().Perm())
+		}
 	}
 }
 
