@@ -103,6 +103,7 @@ func newPrimeCmd(d *Deps) *cobra.Command {
 			}
 			fmt.Println()
 			fmt.Println("Use `DD_PROJECT_ID=<full-uuid> devdash <command>` to target a specific project.")
+			fmt.Println("Short prefixes work for project IDs too: `DD_PROJECT_ID=47eb046a devdash ready`")
 			fmt.Println()
 
 			fmt.Println("## Rules (MANDATORY)")

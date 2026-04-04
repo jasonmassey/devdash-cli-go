@@ -75,7 +75,24 @@ var helpTopics = map[string]string{
   YYYY-MM-DD  Exact date
 
 ## Priority
-  0=critical, 1=high, 2=medium (default), 3=low, 4=backlog`,
+  0=critical, 1=high, 2=medium (default), 3=low, 4=backlog
+
+## Examples
+
+  # Mark an issue as in-progress
+  devdash update abc123 --status=in_progress
+
+  # Close with summary and commit
+  devdash close abc123 --summary="Added projectId to request bodies" --commit=$(git rev-parse HEAD)
+
+  # Batch close multiple issues
+  devdash close abc123 def456 --summary="Shipped both fixes"
+
+  # Create a child issue under a parent
+  devdash create --title="Fix API validation" --parent=abc123
+
+  # Report progress (fire-and-forget, won't fail your workflow)
+  devdash report abc123 --status=code_complete --summary="Tests passing"`,
 
 	"workflow": `# DevDash Workflow Guide
 
@@ -150,9 +167,14 @@ read them to understand what happened.
   Returns bead with project context (projectId, projectName).
   Requires full UUID — prefix lookup only works within a project.
 
-## Multi-Repo Dependencies
-  Dependencies can only be created within a single project.
-  For cross-project coordination, use comments or external tracking.`,
+## Cross-Project Dependencies
+  Dependencies work across projects. The blocker bead is resolved globally
+  (not project-scoped), so you can link issues from different projects.
+
+  Use full UUIDs for cross-project bead references:
+    devdash dep add <issue-uuid> <blocker-uuid-from-other-project>
+
+  The server verifies you have access to both projects.`,
 
 	"report": `# Progress Reporting
 
