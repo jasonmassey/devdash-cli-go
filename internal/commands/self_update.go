@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -47,18 +48,54 @@ func newSelfUpdateCmd() *cobra.Command {
 				return build.Run()
 			}
 
-			fmt.Println("Downloading latest release...")
+			// Fetch latest version from GitHub API
+			fmt.Println("Fetching latest version...")
+			out, err := exec.Command("curl", "-fsSL",
+				"https://api.github.com/repos/jasonmassey/devdash-cli-go/releases/latest").Output()
+			if err != nil {
+				return fmt.Errorf("failed to check latest version: %w", err)
+			}
+			var release struct {
+				TagName string `json:"tag_name"`
+			}
+			if err := json.Unmarshal(out, &release); err != nil {
+				return fmt.Errorf("failed to parse release info: %w", err)
+			}
+			version := strings.TrimPrefix(release.TagName, "v")
+			if version == "" {
+				return fmt.Errorf("could not determine latest version")
+			}
+
+			fmt.Printf("Downloading devdash v%s...\n", version)
+			archive := fmt.Sprintf("devdash_%s_%s_%s.tar.gz", version, runtime.GOOS, runtime.GOARCH)
 			url := fmt.Sprintf(
-				"https://github.com/jasonmassey/devdash-cli-go/releases/latest/download/devdash-%s-%s",
-				runtime.GOOS, runtime.GOARCH)
-			c := exec.Command("curl", "-fsSL", "-o", exe, url)
-			c.Stdout = os.Stdout
-			c.Stderr = os.Stderr
-			if err := c.Run(); err != nil {
+				"https://github.com/jasonmassey/devdash-cli-go/releases/download/%s/%s",
+				release.TagName, archive)
+
+			tmpDir, err := os.MkdirTemp("", "devdash-update-*")
+			if err != nil {
+				return fmt.Errorf("failed to create temp dir: %w", err)
+			}
+			defer os.RemoveAll(tmpDir)
+
+			archivePath := filepath.Join(tmpDir, archive)
+			dl := exec.Command("curl", "-fsSL", "-o", archivePath, url)
+			dl.Stderr = os.Stderr
+			if err := dl.Run(); err != nil {
 				return fmt.Errorf("download failed: %w", err)
 			}
+
+			extract := exec.Command("tar", "-xzf", archivePath, "-C", tmpDir)
+			if err := extract.Run(); err != nil {
+				return fmt.Errorf("extraction failed: %w", err)
+			}
+
+			src := filepath.Join(tmpDir, "devdash")
+			if err := copyFile(src, exe); err != nil {
+				return fmt.Errorf("failed to install binary: %w", err)
+			}
 			_ = os.Chmod(exe, 0755)
-			fmt.Println("Updated successfully.")
+			fmt.Printf("Updated to devdash v%s\n", version)
 			return nil
 		},
 	}
@@ -139,6 +176,14 @@ func newAliasSetupCmd() *cobra.Command {
 			return nil
 		},
 	}
+}
+
+func copyFile(src, dst string) error {
+	data, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(dst, data, 0755)
 }
 
 func isNPMInstall(exe string) bool {
