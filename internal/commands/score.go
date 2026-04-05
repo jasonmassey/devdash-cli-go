@@ -28,7 +28,7 @@ detail including the breakdown factors.
 
 Useful for triaging a backlog to find the best candidates for
 automated execution.`,
-		Args:  cobra.MaximumNArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

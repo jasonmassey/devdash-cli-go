@@ -21,7 +21,7 @@ scheduling urgency and --worker to select an execution environment
 (docker, e2b, or railway).
 
 Returns the created job ID on success.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

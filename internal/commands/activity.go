@@ -17,7 +17,7 @@ func newActivityCmd(d *Deps) *cobra.Command {
 Without arguments, shows all recent activity across the project. When an
 issue ID is provided, filters to activity related to that issue only.
 Use --limit to cap the number of results returned.`,
-		Args:  cobra.MaximumNArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

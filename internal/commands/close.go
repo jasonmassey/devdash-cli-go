@@ -21,7 +21,7 @@ bulk close request.
 
 Best practice: close after "git push" succeeds, and always include
 --summary with context for future readers.`,
-		Args:  cobra.MinimumNArgs(1),
+		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

@@ -20,7 +20,7 @@ resolving cross-project references or inspecting a bead when you only have
 its UUID.
 
 Requires a full UUID (with dashes); short IDs are not accepted.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := d.requireAuth(); err != nil {
 				return err

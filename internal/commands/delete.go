@@ -19,7 +19,7 @@ child issues. Use --force to skip the confirmation prompt.
 
 This action is irreversible. If you want to preserve history, consider
 closing the issue instead.`,
-		Args:  cobra.MinimumNArgs(1),
+		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

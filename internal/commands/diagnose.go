@@ -24,7 +24,7 @@ and the last 30 lines of the output log.
 
 Useful as a single command to answer "what happened?" when a bead's jobs
 aren't completing as expected.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

@@ -18,7 +18,7 @@ func newCommentCmd(d *Deps) *cobra.Command {
 Attaches a text comment to the specified issue. The --body flag is
 required. Use this to record decisions, progress notes, or context
 that doesn't belong in the issue title or description.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {
@@ -52,7 +52,7 @@ func newCommentsCmd(d *Deps) *cobra.Command {
 Fetches and displays every comment attached to the specified issue
 in JSON format. Use this to review the discussion history and any
 decisions recorded on an issue.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

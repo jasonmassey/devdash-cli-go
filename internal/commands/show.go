@@ -22,7 +22,7 @@ enough to identify the issue.
 
 Useful for inspecting an issue's complete state or piping structured data
 to other tools like jq.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

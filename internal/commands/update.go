@@ -20,7 +20,7 @@ must be provided or the command returns an error.
 
 The <id> argument accepts full UUIDs or short prefixes that uniquely
 identify an issue within the current project.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {

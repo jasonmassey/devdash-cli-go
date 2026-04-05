@@ -20,7 +20,7 @@ error. Optionally attach context with --summary, --files-changed,
 
 Use this command to keep the issue's activity trail up to date so that
 future readers can follow what happened and when.`,
-		Args:  cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
 			if err != nil {
