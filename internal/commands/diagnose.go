@@ -15,6 +15,15 @@ func newDiagnoseCmd(d *Deps) *cobra.Command {
 	return &cobra.Command{
 		Use:   "diagnose <id>",
 		Short: "Investigate bead: status, job history, failure details",
+		Long: `Investigate a bead by showing its current state and associated job history.
+
+Prints a summary line (ID, subject, status, priority, type), then lists all
+jobs tied to that bead with their status and creation time. For the first
+failed job found, it displays the error message, failure analysis (if any),
+and the last 30 lines of the output log.
+
+Useful as a single command to answer "what happened?" when a bead's jobs
+aren't completing as expected.`,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			pid, err := d.requireProject(cmd)
